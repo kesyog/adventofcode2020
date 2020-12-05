@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-import string
+try:
+    # Python 2
+    from string import maketrans
+except ImportError:
+    # Python 3
+    maketrans = str.maketrans
 import sys
 
 
@@ -17,8 +22,7 @@ def p2(data):
 def main():
     with open(sys.argv[1]) as fin:
         # Convert to binary string
-        # RIP Python 3
-        data = [line.translate(string.maketrans("FBLR", "0101")) for line in fin]
+        data = [line.translate(maketrans("FBLR", "0101")) for line in fin]
         # Convert to integer
         data = [int(i, 2) for i in data]
 
