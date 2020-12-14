@@ -1,3 +1,6 @@
 # Jupyter notebooks
 *.ipynb
 .ipynb_checkpoints
+
+input.txt
+input
