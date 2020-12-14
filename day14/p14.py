@@ -30,8 +30,6 @@ def p1(lines):
     return sum([v for i, v in cache.items()])
 
 
-
-
 ## Part 2
 def get_all_masks(mask):
     if "X" in mask:
