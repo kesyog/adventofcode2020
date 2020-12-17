@@ -23,7 +23,7 @@ def p1(data):
 
     # Populate initial conditions
     for y, line in enumerate(data):
-        for x, c in enumerate(line):
+        for x, c in enumerate(line.strip()):
             cache[(x, y, 0)] = c
 
     for _ in range(6):
@@ -69,7 +69,7 @@ def p2(data):
 
     # Populate initial conditions
     for y, line in enumerate(data):
-        for x, c in enumerate(line):
+        for x, c in enumerate(line.strip()):
             cache[(0, x, y, 0)] = c
 
     for _ in range(6):
