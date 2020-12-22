@@ -6,6 +6,15 @@ from collections import deque
 import sys
 
 
+def calculate_score(deck):
+    score = 0
+    i = 1
+    while deck:
+        score += deck.pop() * i
+        i += 1
+    return score
+
+
 def p1(deck1, deck2):
     while deck1 and deck2:
         c1, c2 = deck1.popleft(), deck2.popleft()
@@ -18,30 +27,22 @@ def p1(deck1, deck2):
             deck2.append(c1)
 
     winner = deck1 if deck1 else deck2
-    score = 0
-    i = 1
-    while winner:
-        score += winner.pop() * i
-        i += 1
-    return score
+    return calculate_score(winner)
 
 
 def play_recursive_combat(p1, p2):
     cache = set()
     while p1 and p2:
-        c1, c2 = None, None
         if (tuple(p1), tuple(p2)) in cache:
             return (1, p1)
+
+        cache.add((tuple(p1), tuple(p2)))
+        c1, c2 = p1.popleft(), p2.popleft()
+        if len(p1) < c1 or len(p2) < c2:
+            assert c1 != c2
+            result = (1, p1) if c1 > c2 else (2, p2)
         else:
-            cache.add((tuple(p1), tuple(p2)))
-            c1, c2 = p1.popleft(), p2.popleft()
-            if len(p1) < c1 or len(p2) < c2:
-                assert c1 != c2
-                result = (1, p1) if c1 > c2 else (2, p2)
-            else:
-                result = play_recursive_combat(
-                    deque(list(p1)[:c1]), deque(list(p2)[:c2])
-                )
+            result = play_recursive_combat(deque(list(p1)[:c1]), deque(list(p2)[:c2]))
 
         if result[0] == 1:
             p1.append(c1)
@@ -55,13 +56,9 @@ def play_recursive_combat(p1, p2):
 
 def p2(deck1, deck2):
     result = play_recursive_combat(deck1, deck2)
+
     winner = result[1]
-    score = 0
-    i = 1
-    while winner:
-        score += winner.pop() * i
-        i += 1
-    return score
+    return calculate_score(winner)
 
 
 def main():
